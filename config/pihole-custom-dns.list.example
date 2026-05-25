@@ -1,0 +1,13 @@
+# Pi-hole custom local DNS records
+# Format: <IP> <hostname>
+# These are served by Pi-hole for local name resolution.
+# Edit this file and run: make start  (or docker compose restart pihole)
+#
+# Setup: cp config/pihole-custom-dns.list.example config/pihole-custom-dns.list
+
+# 192.168.1.101 rpi.local
+# 192.168.1.101 pihole.example.com
+# 192.168.1.101 status.example.com
+# 192.168.1.101 kuma.example.com
+# 192.168.1.101 nginx.example.com
+# 192.168.1.101 netalertx.example.com

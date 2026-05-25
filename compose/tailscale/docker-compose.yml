@@ -1,0 +1,39 @@
+services:
+  tailscale:
+    image: tailscale/tailscale:${TAILSCALE_VERSION}
+    container_name: tailscale
+    hostname: rpi-tailscale
+    network_mode: host
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_HOSTNAME=rpi-tailscale
+      - TS_USERSPACE=false
+      # 192.168.0.0/24 — main LAN; 192.168.1.0/24 — secondary VLAN/AP subnet
+      - TS_EXTRA_ARGS=--accept-dns=false --advertise-routes=192.168.0.0/24,192.168.1.0/24
+    volumes:
+      - ../../data/tailscale:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.5'
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD-SHELL", "tailscale status >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s

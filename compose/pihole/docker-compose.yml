@@ -1,0 +1,53 @@
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:${PIHOLE_VERSION}
+
+    environment:
+      TZ: 'Europe/Warsaw'
+      FTLCONF_webserver_api_password: '${PIHOLE_PASSWORD}'
+      FTLCONF_dns_listeningMode: 'all'
+
+    volumes:
+      - '../../data/pihole/etc-pihole:/etc/pihole'
+      - '../../config/pihole-custom-dns.list:/etc/pihole/custom.list:ro'
+
+    cap_add:
+      - NET_ADMIN
+      - SYS_TIME
+      - SYS_NICE
+
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+    networks:
+      - homelab
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "8080:80/tcp"
+
+    healthcheck:
+      test: ["CMD-SHELL", "dig +short google.com @127.0.0.1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+networks:
+  homelab:
+    external: true

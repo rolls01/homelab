@@ -1,0 +1,38 @@
+services:
+  unbound:
+    container_name: unbound
+    # mvance/unbound-rpi is RPi-only (arm). For x86 migration use: mvance/unbound (multi-arch)
+    image: "mvance/unbound-rpi:${UNBOUND_VERSION}"
+    expose:
+      - "53"
+    ports:
+      - "5335:53/tcp"
+      - "5335:53/udp"
+    volumes:
+      - "../../data/unbound/opt/unbound/etc/unbound/forward-records.conf:/opt/unbound/etc/unbound/forward-records.conf"
+      - "../../data/unbound/opt/unbound/etc/unbound/a-records.conf:/opt/unbound/etc/unbound/a-records.conf"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - homelab
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD-SHELL", "drill google.com @127.0.0.1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+networks:
+  homelab:
+    external: true

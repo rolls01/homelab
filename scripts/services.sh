@@ -1,0 +1,9 @@
+SERVICES=(
+  unbound
+  pihole
+  nginx
+  uptime-kuma
+  netalertx
+  tailscale
+  crowdsec
+)

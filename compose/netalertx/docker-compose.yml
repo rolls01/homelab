@@ -1,0 +1,37 @@
+services:
+  netalertx:
+    container_name: NetAlertX
+    hostname: NetAlertX
+    image: jokobsk/netalertx:${NETALERTX_VERSION}
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    security_opt:
+      - no-new-privileges:true
+    #ports:
+    #  - "20211"
+    environment:
+      - TZ=Europe/Warsaw
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+    restart: unless-stopped
+    volumes:
+      - ../../data/netalertx:/data
+    tmpfs:
+      - /tmp
+      - /run
+    network_mode: host
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:20211/devices.php || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s

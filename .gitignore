@@ -1,0 +1,39 @@
+#AI
+.claude/
+
+# secrets
+.env
+**/.env
+
+# local config (contains real IPs/hostnames — copy from *.example)
+config/pihole-custom-dns.list
+
+# runtime data
+data/
+data-original/
+backup/
+backups/
+
+# certs
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# tokens/secrets
+*token*
+credentials*
+
+# logs
+*.log
+
+# editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+*.tar.gz
