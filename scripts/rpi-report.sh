@@ -65,16 +65,16 @@ if [ "$TEMP_INT" -ge "$TEMP_ALERT_THRESHOLD" ] || \
    [ "${DISK_ROOT_PCT:-0}" -ge "$DISK_ALERT_THRESHOLD" ] || \
    [ -n "$UNHEALTHY_NAMES" ]; then
   ALERTS_BLOCK="
-🚨 ALERTY:"
+🚨 ALERTS:"
   [ "$TEMP_INT" -ge "$TEMP_ALERT_THRESHOLD" ] && \
     ALERTS_BLOCK="$ALERTS_BLOCK
-• Temperatura: ${TEMP_RAW}°C"
+• Temperature: ${TEMP_RAW}°C"
   [ "${DISK_ROOT_PCT:-0}" -ge "$DISK_ALERT_THRESHOLD" ] && \
     ALERTS_BLOCK="$ALERTS_BLOCK
-• Dysk /: ${DISK_ROOT_PCT}%"
+• Disk /: ${DISK_ROOT_PCT}%"
   [ -n "$UNHEALTHY_NAMES" ] && \
     ALERTS_BLOCK="$ALERTS_BLOCK
-• Unhealthy kontenery:
+• Unhealthy containers:
 $UNHEALTHY_NAMES"
 fi
 

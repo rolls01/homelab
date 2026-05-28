@@ -50,13 +50,13 @@ UNHEALTHY=$(docker ps --filter health=unhealthy --format "• {{.Names}}" 2>/dev
 ISSUES=()
 
 [ "$LOAD_INT" -ge "$LOAD_THRESHOLD" ] && \
-  ISSUES+=("⚙ Load: ${LOAD} (próg ${LOAD_THRESHOLD})")
+  ISSUES+=("⚙ Load: ${LOAD} (threshold ${LOAD_THRESHOLD})")
 
 [ "${DISK_PCT:-0}" -ge "$DISK_THRESHOLD" ] && \
-  ISSUES+=("📀 Disk: ${DISK_HUMAN} (próg ${DISK_THRESHOLD}%)")
+  ISSUES+=("📀 Disk: ${DISK_HUMAN} (threshold ${DISK_THRESHOLD}%)")
 
 [ "$TEMP_INT" -ge "$TEMP_THRESHOLD" ] && \
-  ISSUES+=("🌡 Temp: ${TEMP_RAW} (próg ${TEMP_THRESHOLD}°C)")
+  ISSUES+=("🌡 Temp: ${TEMP_RAW} (threshold ${TEMP_THRESHOLD}°C)")
 
 [ "$DNS" = "❌ FAIL" ] && \
   ISSUES+=("🔎 DNS: FAIL")
@@ -72,11 +72,11 @@ ISSUES=()
 
 ISSUES_TEXT=$(printf '%s\n' "${ISSUES[@]}")
 
-send "⚠️ Homelab — problem wykryty
+send "⚠️ Homelab — issue detected
 
 ${ISSUES_TEXT}
 
-📊 Stan systemu:
+📊 System status:
 Load: $LOAD
 RAM: $MEM
 Swap: $SWAP

@@ -34,8 +34,8 @@ while read -r pct mount; do
   key="disk_${mount//\//__}"
   alert "$key" \
     "$([ "${pct:-0}" -ge "$DISK_THRESHOLD" ] && echo 1 || echo 0)" \
-    "⚠️ Homelab — dysk $mount: ${pct}% (próg ${DISK_THRESHOLD}%)" \
-    "✅ Homelab — dysk $mount: OK (${pct}%)"
+    "⚠️ Homelab — disk $mount: ${pct}% (threshold ${DISK_THRESHOLD}%)" \
+    "✅ Homelab — disk $mount: OK (${pct}%)"
 done < <(df / | awk 'NR>1 {gsub(/%/,""); print $5, $6}')
 
 # --- CPU temperature (RPi only) ---
@@ -44,8 +44,8 @@ if command -v vcgencmd &>/dev/null; then
   TEMP_INT="${TEMP%.*}"
   alert "temp" \
     "$([ "${TEMP_INT:-0}" -ge "$TEMP_THRESHOLD" ] && echo 1 || echo 0)" \
-    "🌡 Homelab — temperatura: ${TEMP}°C (próg ${TEMP_THRESHOLD}°C)" \
-    "✅ Homelab — temperatura: OK (${TEMP}°C)"
+    "🌡 Homelab — temperature: ${TEMP}°C (threshold ${TEMP_THRESHOLD}°C)" \
+    "✅ Homelab — temperature: OK (${TEMP}°C)"
 fi
 
 # --- Unhealthy containers ---
@@ -55,7 +55,7 @@ if [ -n "$UNHEALTHY" ]; then
   while IFS= read -r name; do
     [ -n "$name" ] || continue
     alert "container_${name}" "1" \
-      "🔴 Homelab — kontener unhealthy: $name" \
+      "🔴 Homelab — container unhealthy: $name" \
       "✅ Homelab — $name: healthy"
   done <<< "$UNHEALTHY"
 fi
@@ -73,5 +73,5 @@ done
 # --- Reboot required (kernel/package update) ---
 alert "reboot_required" \
   "$([ -f /var/run/reboot-required ] && echo 1 || echo 0)" \
-  "🔄 Homelab — wymagany restart (kernel update). Uruchom: sudo reboot" \
-  "✅ Homelab — restart wykonany"
+  "🔄 Homelab — reboot required (kernel update). Run: sudo reboot" \
+  "✅ Homelab — reboot done, clock running"
