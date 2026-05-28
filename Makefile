@@ -1,6 +1,6 @@
 SCRIPTS := $(CURDIR)/scripts
 
-.PHONY: help start stop update os-update backup status report monitor check-updates firewall install logs aliases
+.PHONY: help start stop update os-update backup status report monitor check-updates firewall install logs aliases healthcheck
 
 help:
 	@echo "Homelab management"
@@ -42,6 +42,9 @@ report:
 
 monitor:
 	bash $(SCRIPTS)/monitor.sh
+
+healthcheck:
+	bash $(SCRIPTS)/healthcheck.sh
 
 check-updates:
 	bash $(SCRIPTS)/check-updates.sh

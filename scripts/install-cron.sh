@@ -17,7 +17,10 @@ cat >> "$CRON_FILE" <<EOF
 
 # homelab-start
 
-# Every 15 min — disk/temp/container health alerts via Telegram
+# Every 5 min — quick watchdog: sends Telegram if load/disk/temp/DNS/container bad
+*/5 * * * * /bin/bash ${HOMELAB_DIR}/scripts/healthcheck.sh >> ${HOMELAB_DIR}/logs/healthcheck.log 2>&1
+
+# Every 15 min — stateful alerts (fires once per event, sends recovery message)
 */15 * * * * /bin/bash ${HOMELAB_DIR}/scripts/monitor.sh >> ${HOMELAB_DIR}/logs/monitor.log 2>&1
 
 # Daily OS package list refresh at 00:30
