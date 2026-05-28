@@ -103,11 +103,17 @@ flowchart TD
 
 ## Monitoring & Alerting
 
-Uptime Kuma tracks every service. `monitor.sh` runs on cron and sends a Telegram alert on disk pressure, high temperature, unhealthy container, or pending kernel reboot — exactly once per event, with a follow-up when the issue clears.
+Two complementary scripts run via cron:
+
+- **`healthcheck.sh`** (every 5 min) — stateless watchdog; silent when OK, fires Telegram the moment load / disk / temp / DNS / containers cross a threshold
+- **`monitor.sh`** (every 15 min) — stateful; fires exactly once per incident, sends a recovery message when the issue clears
+
+Uptime Kuma provides a visual dashboard for per-service availability history.
 
 | Screenshot | |
 |---|---|
-| ![Daily Telegram report](screenshots/telegram-report.png) | ![Telegram alerts](screenshots/telegram-service-down-alert.png) ![Telegram alerts](screenshots/telegram-backup-alert.png) |
+| ![Daily Telegram report](screenshots/telegram-report.png) | ![Watchdog alerts](screenshots/watchdog_telegram.png) |
+| ![Service down alert](screenshots/telegram-service-down-alert.png) | ![Backup alert](screenshots/telegram-backup-alert.png) |
 
 ### Daily Report Sample
 
