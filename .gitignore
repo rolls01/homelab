@@ -1,5 +1,6 @@
 #AI
 .claude/
+.githooks/
 
 # secrets
 .env
