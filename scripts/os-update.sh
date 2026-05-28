@@ -18,6 +18,7 @@ trap 'log "OS UPDATE FAILED"; "$SCRIPT_DIR/telegram.sh" "❌ OS update FAILED on
 log "========== OS UPDATE START =========="
 
 log "Refreshing apt package list"
+# shellcheck disable=SC2024  # redirect is intentionally as current user (log owned by user, not root)
 sudo apt update -y >> "$LOG_FILE" 2>&1
 
 UPGRADABLE=$(apt list --upgradable 2>/dev/null | grep -c 'upgradable' || true)

@@ -107,7 +107,9 @@ echo "$BACKUP_DIR"
 # Optional: offsite sync via rclone (configure rclone first)
 if command -v rclone &>/dev/null && rclone listremotes 2>/dev/null | grep -q .; then
   log "Syncing to offsite (rclone)"
-  rclone sync "$BACKUP_DIR" "offsite:homelab-backups/$DATE" >> "$LOG_FILE" 2>&1 \
-    && log "Offsite sync completed" \
-    || log "Offsite sync FAILED (check rclone config)"
+  if rclone sync "$BACKUP_DIR" "offsite:homelab-backups/$DATE" >> "$LOG_FILE" 2>&1; then
+    log "Offsite sync completed"
+  else
+    log "Offsite sync FAILED (check rclone config)"
+  fi
 fi

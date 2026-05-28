@@ -6,6 +6,7 @@ HOMELAB_DIR="$(dirname "$SCRIPT_DIR")"
 COMPOSE_DIR="$HOMELAB_DIR/compose"
 LOG_DIR="$HOMELAB_DIR/logs"
 
+# shellcheck source=scripts/services.sh
 source "$SCRIPT_DIR/services.sh"
 
 mkdir -p "$LOG_DIR"

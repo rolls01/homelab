@@ -22,7 +22,7 @@ if [[ ! -d "$BACKUP_ROOT" ]]; then
 fi
 
 echo "Available backups:"
-ls -1 "$BACKUP_ROOT" | sort
+find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d | sort
 
 echo ""
 read -rp "Enter backup directory name to restore: " BACKUP_NAME

@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HOMELAB_DIR="$(dirname "$SCRIPT_DIR")"
 COMPOSE_DIR="$HOMELAB_DIR/compose"
 
+# shellcheck source=scripts/services.sh
 source "$SCRIPT_DIR/services.sh"
 
 for dir in "${SERVICES[@]}"; do

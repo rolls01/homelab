@@ -10,7 +10,6 @@ set -euo pipefail
 #   TEMP_THRESHOLD  — CPU temp in °C (default: 75)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HOMELAB_DIR="$(dirname "$SCRIPT_DIR")"
 
 DISK_THRESHOLD="${DISK_THRESHOLD:-85}"
 LOAD_THRESHOLD="${LOAD_THRESHOLD:-3}"

@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Homelab diagnostic aliases
 # Source from ~/.bashrc:  echo 'source ~/homelab/config/homelab-aliases.sh' >> ~/.bashrc
 
@@ -9,7 +10,7 @@ alias hload='uptime'
 
 alias hram='free -h'
 
-alias hswap='free -m | awk '\''/Swap:/ {printf "Swap: %d/%dMB (%.0f%%)\n", $3, $2, $3/$2*100}'\'''
+hswap() { free -m | awk '/Swap:/ { if ($2==0) print "disabled"; else printf "Swap: %d/%dMB (%.0f%%)\n", $3, $2, $3/$2*100 }'; }
 
 alias hdisk='df -h / /home 2>/dev/null || df -h /'
 
@@ -31,7 +32,7 @@ alias hio='sudo iotop -oPa'
 
 alias htemp='vcgencmd measure_temp'
 
-alias hfreq='vcgencmd measure_clock arm | awk -F= '\''{printf "CPU: %.0f MHz\n", $2/1000000}'\'''
+hfreq() { vcgencmd measure_clock arm | awk -F= '{printf "CPU: %.0f MHz\n", $2/1000000}'; }
 
 alias hvolt='vcgencmd measure_volts core'
 
@@ -63,7 +64,8 @@ hhealth() {
   echo
   echo "===== RAM =====" && free -h
   echo
-  echo "===== DISK =====" && df -h / /home 2>/dev/null || df -h /
+  echo "===== DISK ====="
+  df -h / /home 2>/dev/null || df -h /
   echo
   echo "===== TEMP / THROTTLE =====" && htemp && hthrottle
   echo
@@ -72,4 +74,4 @@ hhealth() {
   echo "===== DNS =====" && dig google.com @127.0.0.1 +short
 }
 
-export -f hthrottle hhealth
+export -f hswap hfreq hthrottle hhealth
