@@ -58,6 +58,9 @@ apt-get install -y --no-install-recommends \
   dnsutils \
   vim \
   htop \
+  btop \
+  iotop \
+  sysstat \
   logrotate \
   fail2ban
 ok "Packages installed"

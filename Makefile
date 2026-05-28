@@ -1,6 +1,6 @@
 SCRIPTS := $(CURDIR)/scripts
 
-.PHONY: help start stop update os-update backup status report monitor check-updates firewall install logs
+.PHONY: help start stop update os-update backup status report monitor check-updates firewall install logs aliases
 
 help:
 	@echo "Homelab management"
@@ -16,6 +16,7 @@ help:
 	@echo "  make check-updates  Check for new image versions"
 	@echo "  make firewall       Apply firewall rules (sudo)"
 	@echo "  make install        Install cron jobs + logrotate"
+	@echo "  make aliases        Add homelab aliases to ~/.bashrc"
 	@echo "  make logs           Tail update log"
 
 start:
@@ -50,6 +51,10 @@ firewall:
 
 install:
 	bash $(SCRIPTS)/install-cron.sh
+
+aliases:
+	@grep -qF 'homelab-aliases.sh' ~/.bashrc || echo 'source $(CURDIR)/config/homelab-aliases.sh' >> ~/.bashrc
+	@echo "Aliases installed — run: source ~/.bashrc"
 
 logs:
 	tail -100 $(CURDIR)/logs/update.log
